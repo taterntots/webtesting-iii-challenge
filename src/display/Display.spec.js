@@ -7,28 +7,40 @@ test('Display renders without crashing', () => {
     render(<Display />);
 })
 
-test('Display shows Open if closed set to false', () => {
+test('Display shows gate is open', () => {
     const { getByText } = render(<Display closed={false} />)
     getByText(/open/i);
 })
 
-test('Display shows Closed if closed set to true', () => {
+test('Display shows gate is closed', () => {
     const { getByText } = render(<Display closed={true} />)
     getByText(/closed/i);
 })
 
-test('Display shows Unlocked if locked set to false', () => {
+test('Display shows gate is unlocked', () => {
     const { getByText } = render(<Display locked={false} />)
     getByText(/unlocked/i);
 })
 
-test('Display shows Locked if locked set to true', () => {
+test('Display shows gate is locked', () => {
     const { getByText } = render(<Display locked={true} />)
     getByText(/^locked$/i);
 })
 
-// test('displays if gate is open and if it is unlocked', () => {
-//     const closed = false;
-//     const locked = false;
-//     const className = '';
-// })
+test('Display shows gate is closed and unlocked', () => {
+    const { getByText } = render(<Display closed={true} locked={false} />)
+    getByText(/closed/i);
+    getByText(/unlocked/i);
+})
+
+test('Display shows the color red when the gate is both closed and locked', () => {
+    const { getByText} = render(<Display closed={true} locked={true} />);
+    expect(getByText(/closed/i).classList.contains('red-led')).toBe(true);
+    expect(getByText(/^locked$/i).classList.contains('red-led')).toBe(true);
+})
+
+test('Display shows the color green when the gate is both open and unlocked', () => {
+    const { getByText} = render(<Display closed={false} locked={false} />);
+    expect(getByText(/open/i).classList.contains('green-led')).toBe(true);
+    expect(getByText(/unlocked/i).classList.contains('green-led')).toBe(true);
+})
